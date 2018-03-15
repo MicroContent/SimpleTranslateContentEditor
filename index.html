@@ -18,58 +18,89 @@
 
     <!-- EDIT Form for User Input -->
     <div>
-        <label for="titleInput">Enter Title:</label>
-        <input id="titleInput" type="text" />
+        <p>
+            <label for="titleInput">Enter Title:</label><input id="titleInput" type="text" />
+        </p>
+        <p>
+            <label for="questionInput">Enter Text to translate:</label><input id="questionInput" type="text" />
+        </p>
+        <p>
+            <label for="instructionsInput">Enter instructions for learner:</label><input id="instructionsInput" type="text" value="Translate from English to German" />
+        </p>
+        <p>
+            <label for="answerInput1">Correct Answer: </label><input class="answer" id="answerInput1" type="text" />
+        </p>
+        <p>
+            <button id="addMore">Add more possible Answers</button>
+        </p>        
     </div>
     <!-- EDIT Form for User Input -->
 
     <!-- EDIT Form logic -->
     <script type="application/javascript">
-        /** 
-            dataGetter (as referenced in function init() ) returns data object with values from form.
+        var addMoreButton = document.getElementById("addMore");
+        addMoreButton.onclick = function() {
+            addMoreButton.parentNode.insertBefore(createAnswer(), addMoreButton);
+        };
 
-            Sharing cards e.g. on facebook uses following 3 properties for displaying the preview:
-            title
-            description
-            imageUrl
+        function createAnswer () {
+            var newAnswer = document.createElement("p");
+            var label = document.createElement("label");
+            var input = document.createElement("input");
+            label.setAttribute("for","answerInput" + (countAnswers() + 1));
+            label.innerHTML = "Correct Answer: ";
+            input.setAttribute("id","answerInput" + (countAnswers() + 1));
+            input.setAttribute("type","text");
+            input.setAttribute("class","answer");
+            newAnswer.appendChild(label);
+            newAnswer.appendChild(input);
+            return newAnswer;
+        }
 
-            for example:
-            title: document.getElementById('titleInput').value,
-            type: 'FillIN',
-            fillintext: document.getElementById('fillintext').value,
-            questionContext: document.getElementById('hintInput').value,
-            answerContext: document.getElementById('explanationInput').value,
-            lastEdit: Date.now(),
-            answers: extractAnswersToArray(document.getElementById('fillintext').value),
-            releaseStatus: 'PUBLIC',
-            multimedia: [],
-            description: replacePossibleAnswers(document.getElementById('fillintext').value)
-        **/
+        function countAnswers () {
+            var answerInputs = document.getElementsByClassName('answer');
+            return answerInputs.length;
+        }
+
+        function getAnswers () {
+            var answers = [];
+            var answerInputs = document.getElementsByClassName('answer');
+            for (var i = 0; i<answerInputs.length; i++) {
+                if (document.getElementById(!(('answerInput'+(i+1).value) === ""))) answers.push(document.getElementById('answerInput'+(i+1).value));
+            }
+            return answers;
+        }
+
+        function setAnswers () {
+            for (var i = 0; i<window.data.answers.length; i++) {
+                addMoreButton.parentNode.insertBefore(createAnswer(), addMoreButton);
+                var createdAnswer = document.getElementById("answerInput"+(i+1));
+                createAnswer.value = window.data.answers[i];
+            }
+            if (window.data.answers.length == 0) addMoreButton.parentNode.insertBefore(createAnswer(), addMoreButton);
+        }
+        
         function dataGetter() {
             return {
                 // return data object
                 lastEdit: Date.now(),
-                title: document.getElementById('titleInput').value
+                releaseStatus: 'PUBLIC',
+                type: 'sTranslate',
+                title: document.getElementById('titleInput').value,
+                answers: getAnswers(),
+                question: document.getElementById('questionInput').value,
+                instructions: document.getElementById('instructionsInput').value,
+                description: (document.getElementById('instructionsInput').value)+": "+(document.getElementById('questionInput').value)
             }
         }
 
-        /** 
-            function init() -> dont delete! used for initialization.
-        **/
         init();
 
-        /** 
-            For each input field in form get & set values from windows.data object.
-            Is used when user is editing this card.
-
-            for example:
-            document.getElementById('fillintext').value = window.data.fillintext;
-            document.getElementById('hintInput').value = window.data.questionContext;
-            document.getElementById('explanationInput').value = window.data.answerContext;
-
-        **/
         document.getElementById('titleInput').value = window.data.title;
-
+        document.getElementById('questionInput').value = window.data.question;
+        document.getElementById('instructionsInput').value = window.data.instructions;
+        
+        setAnswers();
     </script>
     <!-- EDIT Form logic -->
 </body>
