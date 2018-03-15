@@ -1,1 +1,1 @@
-# SimpleTranslateContentEditor
+# AbstractContentEditor
