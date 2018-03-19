@@ -32,7 +32,7 @@
         </p>
         <p>
             <button id="addMore">Add more possible Answers</button>
-        </p>        
+        </p>      
     </div>
     <!-- EDIT Form for User Input -->
 
@@ -66,7 +66,10 @@
             var answers = [];
             var answerInputs = document.getElementsByClassName('answer');
             for (var i = 0; i<answerInputs.length; i++) {
-                if (document.getElementById(!(('answerInput'+(i+1).value) === ""))) answers.push(document.getElementById('answerInput'+(i+1).value));
+                if (!(document.getElementById('answerInput'+(i+1)).value === "")) 
+                {
+                    answers.push(document.getElementById('answerInput'+(i+1)).value);
+                }
             }
             return answers;
         }
