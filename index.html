@@ -78,7 +78,7 @@
             for (var i = 0; i<window.data.answers.length; i++) {
                 addMoreButton.parentNode.insertBefore(createAnswer(), addMoreButton);
                 var createdAnswer = document.getElementById("answerInput"+(i+1));
-                createAnswer.value = window.data.answers[i];
+                createdAnswer.value = window.data.answers[i];
             }
             if (window.data.answers.length == 0) addMoreButton.parentNode.insertBefore(createAnswer(), addMoreButton);
         }
@@ -104,6 +104,22 @@
         document.getElementById('instructionsInput').value = window.data.instructions;
         
         setAnswers();
+
+          /**@argument
+
+        {
+        "title": "Liebesbezeichnungen",
+        "answers": [
+            "Ich liebe SOIL",
+            "Ich mag SOIL"
+        ],
+        "question": "I love SOIL",
+        "instructions": "Übersetze den Satz von English nach Deutsch",
+        "description": "Übersetze den Satz von English nach Deutsch: \"I Love SOIL\""
+        }
+
+        **/
+
     </script>
     <!-- EDIT Form logic -->
 </body>
